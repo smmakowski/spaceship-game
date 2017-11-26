@@ -1,17 +1,8 @@
-// game state object
-var GameState = {
-  preload: function() { // preload assets here
-    this.load.image('background', 'assets/images/sample-background.png');
-  },
-  create: function() { // create scene here
-    this.background = this.game.add.sprite(0, 0,'background');
-  },
-  update: function() { // update function
-
-  },
-};
-
-var game = new Phaser.Game(640, 360, Phaser.AUTO); // init new Game; pahser will automatically append a canvas
-
-game.state.add('GameState', GameState); // add GameState
-game.state.start('GameState'); // start game state
+// create phaser game
+let game = new Phaser.Game(640, 360, Phaser.AUTO); // init new Game; pahser will automatically append a canvas
+// make sure to change the dimenions of your canvas as needed 
+game.state.add('BootState', BootState); // preload loading assets, and set window ratios
+game.state.add('PreloadState', PreloadState); // preload game and home assets and be loading screen
+game.state.add('HomeState', HomeState); // home screen state/main menu
+game.state.add('GameState', GameState); // add GameState this is where the main game will occur
+game.state.start('BootState'); // start game state
