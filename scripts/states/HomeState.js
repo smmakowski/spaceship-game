@@ -8,6 +8,7 @@ let HomeState = {
     console.log('Now on HomeState!');
     this.homeText = this.add.text(this.game.world.centerX, this.game.world.centerY, this.message, homeTextStyle);
     this.homeText.anchor.setTo(.5);
+    this.homeText.inputEnabled = true;
     this.homeText.events.onInputDown.add(this.startGame, this);
     // call start method to enter game state (set as event handler)
   },
