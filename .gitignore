@@ -6,3 +6,7 @@ bower_components/
 # file system settings
 
 .DS_Store
+
+# Package Lock
+
+package_lock.json

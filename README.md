@@ -1,2 +1,2 @@
-# Phaser Starter
-This is a basic starter for phaser projects that uses a node/express server.
+# Spaceship Game
+Space Invaders clone built using assets and course material from Zenva's The Complete Mobile Game Development Course with Phaser
