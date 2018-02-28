@@ -22,11 +22,14 @@ MyGame.GameState = {
     this.initBullets(); // add group of bullets and enable phyics 
     this.shootingTimer = this.game.time.events.loop(Phaser.Timer.SECOND / 5, this.createPlayerBullet, this); // repeats bullet creation 
 
-    let enemy = new Enemy(this.game, 100, 100, 'greenEnemy', 10, []);
-    this.game.add.existing(enemy);
+    this.initEnemies();
   },
 
   update: function() { // update methid
+
+  	this.game.physics.arcade.overlap(this.playerBullets, this.enemies, this.damageEnemy, null, this); 
+  	// (Collider a, COllider, b, cb, cb conditonal funciton [runs callback if evals as true], obj context)
+
   	// update will run overthing under this method periodically during runtime
   	this.player.body.velocity.x = 0;
 
@@ -37,7 +40,7 @@ MyGame.GameState = {
 
   		let direction = targetX >= this.game.world.centerX ? 1 : -1; // change velocity direction depending on touch location
 
-  		console.log('TargetX = ', targetX);
+  		//console.log('TargetX = ', targetX);
 
   		this.player.body.velocity.x = direction * this.PLAYER_SPEED;
   	}
@@ -61,5 +64,20 @@ MyGame.GameState = {
   	//sert velocity
   	bullet.body.velocity.y = this.BULLET_SPEED;
   },
+  initEnemies: function()  {
+  	this.enemies = this.game.add.group();
+  	this.enemies.enableBody = true;
 
+  	let enemy = new Enemy(this.game, 100, 100, 'greenEnemy', 10, []);
+    this.enemies.add(enemy);
+    enemy.body.velocity.x = 100;
+    enemy.body.velocity.y = 50;
+  },
+
+  damageEnemy: function(bullet, enemy) {
+  	enemy.damage(1);
+  	bullet.kill();
+
+  	
+  },
 };
