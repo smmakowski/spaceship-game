@@ -4,8 +4,13 @@ MyGame = MyGame || {};
 MyGame.BootState = {
   init: function() {
     this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-    this.scale.pageAlignVertically = true;
-    this.scale.pageAlignHorizontally = true;
+
+    // init Physics and physics settings
+    this.game.physics.startSystem(Phaser.ARCADE);
+    this.PLAYER_SPEED = 200;
+    this.BULLET_SPEED = -1000;
+    // this.scale.pageAlignVertically = true;
+    // this.scale.pageAlignHorizontally = true;
   },
   preload: function() {
     //preload assets for PreloadState
