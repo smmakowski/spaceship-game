@@ -48,7 +48,10 @@ MyGame.GameState = {
 
   initBullets: function() { // function to create gourp of bullers
   	this.playerBullets = this.add.group();
+  	this.enemyBullets = this.add.group();
+
   	this.playerBullets.enableBody = true;
+  	this.enemyBullets.enableBody = true;
   },
 
   createPlayerBullet: function() {
@@ -64,6 +67,11 @@ MyGame.GameState = {
   	//sert velocity
   	bullet.body.velocity.y = this.BULLET_SPEED;
   },
+
+  createEnemyBullet: function() {
+
+  },
+
   initEnemies: function()  {
   	this.enemies = this.game.add.group();
   	this.enemies.enableBody = true;
