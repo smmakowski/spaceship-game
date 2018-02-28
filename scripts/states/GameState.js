@@ -13,10 +13,14 @@ MyGame.GameState = {
     this.PLAYER_SPEED = 200;
     this.BULLET_SPEED = -1000;
 
+    // add paleyr spites
     this.player = this.add.sprite(this.game.world.centerX, this.game.world.height - 50, 'player');
     this.player.anchor.setTo(0.5); // set anchor to absolute center (omit y)
     this.game.physics.arcade.enable(this.player); //enable phyics
     this.player.body.collideWorldBounds = true; // ensure collisionm wit gma world bounds
+
+    this.initBullets(); // add group of bullets and enable phyics 
+    this.shootingTimer = this.game.time.events.loop(Phaser.Timer.SECOND / 5, this.createPlayerBullet, this); // repeats bullet creation 
   },
 
   update: function() { // update methid
@@ -35,4 +39,24 @@ MyGame.GameState = {
   		this.player.body.velocity.x = direction * this.PLAYER_SPEED;
   	}
   },
+
+  initBullets: function() { // function to create gourp of bullers
+  	this.playerBullets = this.add.group();
+  	this.playerBullets.enableBody = true;
+  },
+
+  createPlayerBullet: function() {
+  	let bullet = this.playerBullets.getFirstExists(false);
+
+  	if (!bullet) {
+  		bullet = new PlayerBullet(this.game, this.player.x, this.player.top); // creates new instance of 
+  		this.playerBullets.add(bullet); // add to the group
+  	} else {
+  		bullet.reset(this.player.x, this.player.top);
+  	}
+
+  	//sert velocity
+  	bullet.body.velocity.y = this.BULLET_SPEED;
+  },
+
 };
