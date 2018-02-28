@@ -5,10 +5,11 @@ MyGame.BootState = {
   init: function() {
     this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 
-    // init Physics and physics settings
+    // init Physics
     this.game.physics.startSystem(Phaser.ARCADE);
-    this.PLAYER_SPEED = 200;
-    this.BULLET_SPEED = -1000;
+
+    // Physiscs Constants moved to game state
+
     // this.scale.pageAlignVertically = true;
     // this.scale.pageAlignHorizontally = true;
   },
