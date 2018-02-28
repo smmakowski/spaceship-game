@@ -21,6 +21,9 @@ MyGame.GameState = {
 
     this.initBullets(); // add group of bullets and enable phyics 
     this.shootingTimer = this.game.time.events.loop(Phaser.Timer.SECOND / 5, this.createPlayerBullet, this); // repeats bullet creation 
+
+    let enemy = new Enemy(this.game, 100, 100, 'greenEnemy', 10, []);
+    this.game.add.existing(enemy);
   },
 
   update: function() { // update methid
