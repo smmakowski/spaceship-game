@@ -1,7 +1,7 @@
 MyGame = MyGame || {};
 
 class Enemy extends Phaser.Sprite {
-	constructor(game, x, y, key, health, enemyBullets) {
+	constructor(game, x, y, key, health, enemyBullets, shotInterval) {
 		super(game, x, y, key);
 		this.animations.add('getHit', [0, 1, 2, 1, 0], 25, false);
 		this.anchor.setTo(0.5);
@@ -9,6 +9,10 @@ class Enemy extends Phaser.Sprite {
 
 		this.enemyBullets = enemyBullets;
 		//game.physics.arcade.enable(this);
+		this.enemyTimer = this.game.time.create(false); // timer will not self destroy after running
+		this.enemyTimer.start();
+
+		this.scheduleShooting(shotInterval);
 	}
 
 	damage(amount) {
@@ -26,6 +30,25 @@ class Enemy extends Phaser.Sprite {
 			// How many of the partcles to release
 			
 		}
+	}
+
+	scheduleShooting(shotInterval) {
+		this.shoot();
+		this.enemyTimer.add(Phaser.Timer.SECOND * shotInterval, this.scheduleShooting, this);
+		// Interval, Method to call after scheulding is done, this context)
+	}
+
+	shoot() {
+		let bullet = this.enemyBullets.getFirstExists(false);
+
+		if (!bullet) {
+			bullet = new EnemyBullet(this.game, this.x, this.bottom);
+			this.enemyBullets.add(bullet);
+		} else {
+			bullet.reset(this.x, this.y);
+		}
+
+		bullet.body.velocity.y = 100;
 	}
 
 	update() {

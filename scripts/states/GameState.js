@@ -27,8 +27,13 @@ MyGame.GameState = {
 
   update: function() { // update methid
 
-  	this.game.physics.arcade.overlap(this.playerBullets, this.enemies, this.damageEnemy, null, this); 
+  	this.game.physics.arcade.overlap(this.playerBullets, this.enemies, this.damageEnemy, null, this);
+  	this.game.physics.arcade.overlap(this.enemyBullets, this.player, this.killPlayer, null, this);
   	// (Collider a, COllider, b, cb, cb conditonal funciton [runs callback if evals as true], obj context)
+  	/*
+		NOTE MAKE SURE TO CHANGE KILL PLAYEER TO DAMAGE PLAYER SO PLAYER CAN LIVE LONGER (similar to damageEnmey)
+		ALSO, REFACTOR PLAYER FUNCTIONALITY INTO OWN CLASS (Non- PLAYER)
+  	*/
 
   	// update will run overthing under this method periodically during runtime
   	this.player.body.velocity.x = 0;
@@ -48,10 +53,10 @@ MyGame.GameState = {
 
   initBullets: function() { // function to create gourp of bullers
   	this.playerBullets = this.add.group();
-  	this.enemyBullets = this.add.group();
+  	
 
   	this.playerBullets.enableBody = true;
-  	this.enemyBullets.enableBody = true;
+  	
   },
 
   createPlayerBullet: function() {
@@ -69,14 +74,17 @@ MyGame.GameState = {
   },
 
   createEnemyBullet: function() {
-
+  	
   },
 
   initEnemies: function()  {
   	this.enemies = this.game.add.group();
   	this.enemies.enableBody = true;
 
-  	let enemy = new Enemy(this.game, 100, 100, 'greenEnemy', 10, []);
+  	this.enemyBullets = this.game.add.group();
+  	this.enemyBullets.enableBody = true;
+
+  	let enemy = new Enemy(this.game, 100, 100, 'greenEnemy', 10, this.enemyBullets, 2);
     this.enemies.add(enemy);
     enemy.body.velocity.x = 100;
     enemy.body.velocity.y = 50;
@@ -85,7 +93,11 @@ MyGame.GameState = {
   damageEnemy: function(bullet, enemy) {
   	enemy.damage(1);
   	bullet.kill();
-
-  	
   },
+
+  killPlayer: function(bullet, player) { // make sure to implement helath and damage for later
+  	player.damage(1);
+  	bullet.kill();
+  	this.game.state.start('GameState');
+  }
 };
