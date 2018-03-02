@@ -84,10 +84,10 @@ MyGame.GameState = {
   	this.enemyBullets = this.game.add.group();
   	this.enemyBullets.enableBody = true;
 
-  	let enemy = new Enemy(this.game, 100, 100, 'greenEnemy', 10, this.enemyBullets, 2);
-    this.enemies.add(enemy);
-    enemy.body.velocity.x = 100;
-    enemy.body.velocity.y = 50;
+  	this.enemy = new Enemy(this.game, 100, 100, 'greenEnemy', 10, this.enemyBullets, 2); // change from var dec to this
+    this.enemies.add(this.enemy);
+    this.enemy.body.velocity.x = 0; // oriignally 100
+    this.enemy.body.velocity.y = 0; // oriignallly 50
   },
 
   damageEnemy: function(bullet, enemy) {

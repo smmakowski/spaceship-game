@@ -51,6 +51,18 @@ class Enemy extends Phaser.Sprite {
 		bullet.body.velocity.y = 100;
 	}
 
+	reset(x, y, health, key, scale, speedX, speedY) {
+		// Sprites built in Class has reset method that takes, xY location and new health)
+		Phaser.Sprite.prototype.reset.call(this, x, y, health);
+
+		// This method calls that method and then uses extra parameters to set addtional properties that
+		// original methodcannot
+		this.loadTexture(key); // sets the texture of the sprite
+		this.scale.setTo(scale);
+		this.body.velocity.x = speedX;
+		this.body.velocity.y = speedY;
+	}
+
 	update() {
 		if (this.x < 0.05 * this.game.world.width) {
 			this.x = 0.05 * this.game.world.width + 2;
