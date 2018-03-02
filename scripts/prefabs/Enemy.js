@@ -31,6 +31,7 @@ class Enemy extends Phaser.Sprite {
 
 			this.enemyTimer.pause(); // pauses the enemy shooting time
 			// when enemys die and are in pool the Class instance is still there
+			// killing nemey does not stop any timers that are created
 			// make sure to pause timers to avoid unecessayr script runs obj is awaiting reset
 		}
 	}
@@ -67,7 +68,7 @@ class Enemy extends Phaser.Sprite {
 		this.body.velocity.x = speedX;
 		this.body.velocity.y = speedY;
 
-		this.enemyTime.resume(); // resume timer to continue shooting.
+		this.enemyTimer.resume(); // resume timer to continue shooting.
 	}
 
 	update() {

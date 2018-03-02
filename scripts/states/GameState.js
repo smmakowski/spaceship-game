@@ -73,10 +73,6 @@ MyGame.GameState = {
   	bullet.body.velocity.y = this.BULLET_SPEED;
   },
 
-  createEnemyBullet: function() {
-  	
-  },
-
   initEnemies: function()  {
   	this.enemies = this.game.add.group();
   	this.enemies.enableBody = true;
@@ -84,10 +80,11 @@ MyGame.GameState = {
   	this.enemyBullets = this.game.add.group();
   	this.enemyBullets.enableBody = true;
 
-  	this.enemy = new Enemy(this.game, 100, 100, 'greenEnemy', 10, this.enemyBullets, 2); // change from var dec to this
-    this.enemies.add(this.enemy);
-    this.enemy.body.velocity.x = 0; // oriignally 100
-    this.enemy.body.velocity.y = 0; // oriignallly 50
+  	//this.enemy = new Enemy(this.game, 100, 100, 'greenEnemy', 10, this.enemyBullets, 2); // change from var dec to this
+    //this.enemies.add(this.enemy);
+
+    //this.enemy.body.velocity.x = 0; // oriignally 100
+    //this.enemy.body.velocity.y = 0; // oriignallly 50
   },
 
   damageEnemy: function(bullet, enemy) {
@@ -99,5 +96,16 @@ MyGame.GameState = {
   	player.damage(1);
   	bullet.kill();
   	this.game.state.start('GameState');
+  },
+
+  createEnemy: function(x, y, key, health, scale, shotInterval, speedX, speedY) {
+    let enemy = this.enemies.getFirstExists(false);
+
+    if (!enemy) {
+      enemy = new Enemy(this.game, x, y, key, health, this.enemyBullets, shotInterval);
+      this.enemies.add(enemy);
+    }
+      enemy.reset(x, y, health, key, scale, speedX, speedY);
   }
+
 };
