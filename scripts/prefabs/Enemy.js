@@ -28,7 +28,10 @@ class Enemy extends Phaser.Sprite {
 			emitter.start(true, 500, null, 100); 
 			//FOR ABOVE: true (set all paricles lose at same time/expode), life of each aprticler(ms), frequency (how often to release if noit explosion)
 			// How many of the partcles to release
-			
+
+			this.enemyTimer.pause(); // pauses the enemy shooting time
+			// when enemys die and are in pool the Class instance is still there
+			// make sure to pause timers to avoid unecessayr script runs obj is awaiting reset
 		}
 	}
 
@@ -59,8 +62,12 @@ class Enemy extends Phaser.Sprite {
 		// original methodcannot
 		this.loadTexture(key); // sets the texture of the sprite
 		this.scale.setTo(scale);
+
+		// when a spreite is killed it's velocity is set to 0; this reset includes parametesto cahgne them back
 		this.body.velocity.x = speedX;
 		this.body.velocity.y = speedY;
+
+		this.enemyTime.resume(); // resume timer to continue shooting.
 	}
 
 	update() {
