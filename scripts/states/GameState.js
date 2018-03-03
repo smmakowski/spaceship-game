@@ -40,6 +40,9 @@ MyGame.GameState = {
     // load level
     this.loadLevel();
 
+    this.orchestra = this.add.audio('orchestra'); // add an dstart music
+    this.orchestra.play();
+
   },
 
   update: function() { // update methid
@@ -110,7 +113,8 @@ MyGame.GameState = {
   },
 
   killPlayer: function(bullet, player) { // make sure to implement helath and damage for later
-  	player.damage(1);
+  	this.orchestra.stop();
+    player.damage(1);
   	bullet.kill();
   	this.game.state.start('GameState');
   },

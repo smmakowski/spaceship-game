@@ -6,7 +6,7 @@ MyGame.BootState = {
     this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 
     // init Physics
-    this.game.physics.startSystem(Phaser.ARCADE);
+    
 
     // Physiscs Constants moved to game state
 

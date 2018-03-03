@@ -20,6 +20,9 @@ MyGame.PreloadState = {
     this.load.text('level2', '../../assets/data/level2.json');
     this.load.text('level3', '../../assets/data/level3.json');
 
+    // load music
+    this.load.audio('orchestra', ['../../assets/audio/8bit-orchestra.mp3', '../../assets/audio/8bit-orchestra.mgg']);// lo aduio
+
   },
   create: function() {
     console.log('Now in PreloadState');
