@@ -2,16 +2,30 @@ MyGame = MyGame || {};
 
 // Game state
 MyGame.GameState = {
-  create: function() { // create scene here
+  init: function(currentLevel) {
+
+    this.PLAYER_SPEED = 200;
+    this.BULLET_SPEED = -1000;
+    this.game.physics.startSystem(Phaser.ARCADE);
+    this.numLevels = 3;
+    this.currentLevel = ((typeof currentLevel === 'object' || !currentLevel) ? 1: currentLevel);
+  },
+
+  create: function(currentLevel) { // create scene here
   	// place background and add other sprites
     this.background = this.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'space');
-
+    console.log('the thing passed into create is', currentLevel)
     this.background.autoScroll(0, 30); // autoscroll background (x y direction)
     console.log('Now in GameState!'); // tiles sprite to fit entire background (x, y, width, height, sprite);
 
     //establish constants
-    this.PLAYER_SPEED = 200;
-    this.BULLET_SPEED = -1000;
+
+
+    // set level infomration
+    
+    
+    const self = this;
+    console.log('THE CURRENT LEVEL AS DEFINED BY CREAT() :', self.currentLevel);
 
     // add paleyr spites
     this.player = this.add.sprite(this.game.world.centerX, this.game.world.height - 50, 'player');
@@ -114,15 +128,31 @@ MyGame.GameState = {
   loadLevel: function() {
     this.currentEnemyIndex = 0; // start with first enemy on level data
     const self = this;
-    this.levelData = this.getLevel(); // this will be the pare
-    console.log('levelData is: ', self.levelData);
+    console.log('level passed in: ', self.currentLevel)
+    this.levelData = JSON.parse(self.game.cache.getText('level' + self.currentLevel)); // this will be the pare
+    //console.log('levelData is: ', self.levelData);
+    //console.log('level data', self.levelData)
+
+    // sets end of level timer based on level duration in level data
+    this.endOfLevelTimer = this.game.time.events.add(this.levelData.duration * 1000, function() {
+      //console.log('level ended');
+      //console.log('now loading', self.currentLevel);
+
+      if (self.currentLevel < 3) { // if there are levels left then increment curent level
+        self.currentLevel++;
+      } else { // else set back to level 1
+        self.currentLevel = 1; 
+      }
+      self.game.state.start('GameState', true, false, self.currentLevel); // start the game state again
+    }, self); // takes timer duration, callbaclk and context; callback called after timer is done
+
     this.scheduleNextEnemy();
   },
 
   scheduleNextEnemy: function() {
     let nextEnemy = this.levelData.enemies[this.currentEnemyIndex];
     if (nextEnemy) {
-      console.log('Next Enemy', nextEnemy);
+      //console.log('Next Enemy', nextEnemy);
       // if first enmey set gap to time/ else set diffrence between currenty and last time
       let nextTime = 1000 * (nextEnemy.time - (this.currentEnemyIndex === 0 ? nextEnemy.time : 
       nextEnemy.time - this.levelData.enemies[this.currentEnemyIndex - 1].time));
@@ -138,9 +168,5 @@ MyGame.GameState = {
       this.scheduleNextEnemy(); // call function again to
     }
   },
-
-  getLevel: function() {
-    return JSON.parse(this.game.cache.getText('level1'));
-  }
 
 };
