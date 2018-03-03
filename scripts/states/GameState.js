@@ -18,11 +18,14 @@ MyGame.GameState = {
     this.player.anchor.setTo(0.5); // set anchor to absolute center (omit y)
     this.game.physics.arcade.enable(this.player); //enable phyics
     this.player.body.collideWorldBounds = true; // ensure collisionm wit gma world bounds
-
+    // init bullet pool
     this.initBullets(); // add group of bullets and enable phyics 
     this.shootingTimer = this.game.time.events.loop(Phaser.Timer.SECOND / 5, this.createPlayerBullet, this); // repeats bullet creation 
-
+    // init enemies
     this.initEnemies();
+    // load level
+    this.loadLevel();
+
   },
 
   update: function() { // update methid
@@ -39,7 +42,7 @@ MyGame.GameState = {
   	this.player.body.velocity.x = 0;
 
   	if (this.game.input.activePointer.isDown) { // if player is touching screen
-  		console.log('Currently Pressing Down')
+  		 // console.log('Currently Pressing Down')
   		let targetX = this.game.input.activePointer.position.x; // set target destination to x/y coords
   		// let targetY = this.game.input.activePointer.position.y; // no need for y since player only moves left to right
 
@@ -106,6 +109,38 @@ MyGame.GameState = {
       this.enemies.add(enemy);
     }
       enemy.reset(x, y, health, key, scale, speedX, speedY);
+  },
+
+  loadLevel: function() {
+    this.currentEnemyIndex = 0; // start with first enemy on level data
+    const self = this;
+    this.levelData = this.getLevel(); // this will be the pare
+    console.log('levelData is: ', self.levelData);
+    this.scheduleNextEnemy();
+  },
+
+  scheduleNextEnemy: function() {
+    let nextEnemy = this.levelData.enemies[this.currentEnemyIndex];
+    if (nextEnemy) {
+      console.log('Next Enemy', nextEnemy);
+      // if first enmey set gap to time/ else set diffrence between currenty and last time
+      let nextTime = 1000 * (nextEnemy.time - (this.currentEnemyIndex === 0 ? nextEnemy.time : 
+      nextEnemy.time - this.levelData.enemies[this.currentEnemyIndex - 1].time));
+
+      this.nextEnemyTimer = this.game.time.events.add(nextTime, function() {
+        this.createEnemy(nextEnemy.x, nextEnemy.y, nextEnemy.key, nextEnemy.health, nextEnemy.scale, 2, 
+        nextEnemy.speedX, nextEnemy.speedY);
+      }, this);
+
+      // above methode (.add) takes interval and callback (in this case using a lambda) and context
+
+      this.currentEnemyIndex++; // increment to go to next enemy
+      this.scheduleNextEnemy(); // call function again to
+    }
+  },
+
+  getLevel: function() {
+    return JSON.parse(this.game.cache.getText('level1'));
   }
 
 };
